@@ -1,33 +1,40 @@
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-import os
+import numpy as np
+import pandas as pd 
+from keras.preprocessing.image import ImageDataGenerator, load_img
+from keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-import tensorflow as tf
-import glob
 import random
-import math
-from PIL import Image
-import tflearn
-from tflearn.data_utils import image_preloader
-#%matplotlib inline
+import os
+#print(os.listdir("C:/temp/DogsandCats/train"))
 
-# data processing
+# define image related constants
+FAST_RUN = False
+IMAGE_WIDTH=128
+IMAGE_HEIGHT=128
+IMAGE_SIZE=(IMAGE_WIDTH, IMAGE_HEIGHT)
+IMAGE_CHANNELS=3
 
-IMAGE_FOLDER = 'C:/temp/DogsandCats/train'
-VALIDATION_FOLDER = 'C:/temp/DogsandCats/test1'
-TRAIN_DATA = 'C:/temp/DogsandCats/train/training_data.txt'
-TEST_DATA = 'C:/temp/DogsandCats/train/test_data.txt'
-VALIDATION_DATA = 'C:/temp/DogsandCats/test1/validation_data.txt'
-train_porportion = 0.9
-test_porportion = 0.1
-#validation_proportion = 0.1
+# prepare training data
 
-filenames_image = os.listdir(IMAGE_FOLDER)
-random.shuffle(filenames_image)
+filenames = os.listdir("C:/temp/DogsandCats/train")
+categories = []
+for filename in filenames:
+    category = filename.split('.')[0]
+    if category == 'dog':
+        categories.append(1)
+    else:
+        categories.append(0)
 
-total = len(filenames_image)
-fr = open(TRAIN_DATA, 'w')
-train_files = filenames_image[0: int(train_porportion*total)]
-for filename in train_files:
-    if filenames[0:3] == 'cat':
-        fr.write()
+df = pd.DataFrame({
+    'filename': filenames,
+    'category': categories
+})
+# print(df.head())
+#        filename  category
+# 0     cat.0.jpg         0
+# 1     cat.1.jpg         0
+# 2    cat.10.jpg         0
+# 3   cat.100.jpg         0
+# 4  cat.1000.jpg         0
+# block comment: Ctrl+K+C & Ctrl+K+U
